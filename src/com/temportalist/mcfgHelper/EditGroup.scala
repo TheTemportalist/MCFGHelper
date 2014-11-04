@@ -100,12 +100,6 @@ class EditGroup(private var groupSelected: String) extends GenericGui with ISend
 	}
 
 	override protected def save(): Unit = {
-		/*
-		val activeArray: Array[String] = new Array[String](this.activeList.getAllSelected().size())
-		for (i <- 0 until this.activeList.getAllSelected().size()) {
-			activeArray(i) = this.activeList.getAllSelected().get(i)
-		}
-		*/
 		HelperData.getGroup(this.groupSelected).setModules(this.activeList.getAllValues())
 		HelperData.renameGroup(this.groupSelected, this.nameField.getText())
 		this.groupSelected = this.nameField.getText

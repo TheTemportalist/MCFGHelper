@@ -15,7 +15,7 @@ class Module(private var name: String) {
 
 	private var directoryPath: String = ""
 	private var buildFilePath: String = ""
-	private var useGradle: Boolean = false
+	private var useGradlew: Boolean = true
 	private var gradlewPath: String = ""
 
 	def getName(): String = {
@@ -52,12 +52,12 @@ class Module(private var name: String) {
 		}
 	}
 
-	def isUsingGradle(): Boolean = {
-		this.useGradle
+	def isUsingGradlew(): Boolean = {
+		this.useGradlew
 	}
 
-	def setUsingGradle(value: Boolean): Unit = {
-		this.useGradle = value
+	def setUsingGradlew(value: Boolean): Unit = {
+		this.useGradlew = value
 	}
 
 	def getGradlewPath(): String = {

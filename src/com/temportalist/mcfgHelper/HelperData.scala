@@ -45,6 +45,12 @@ object HelperData {
 		}
 	}
 
+	def renameModule(prev: String, newName: String): Unit = {
+		val module: Module = this.modules.remove(prev)
+		module.setName(newName)
+		this.addModule(module)
+	}
+
 	def containsModule(moduleName: String): Boolean = {
 		this.modules.containsKey(moduleName)
 	}

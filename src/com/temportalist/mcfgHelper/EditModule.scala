@@ -18,6 +18,7 @@ class EditModule(private val modules: java.util.List[String])
 	var nameField: JTextField = null
 	var directoryField: JTextField = null
 	var useGradlewBox: JCheckBox = null
+	var useGradlew: Boolean = false
 	var gradlewField: JTextField = null
 	var gradlewSelect: GuiButton = null
 	var buildFileField: JTextField = null
@@ -42,12 +43,15 @@ class EditModule(private val modules: java.util.List[String])
 		this.add(dirSelect)
 
 		this.add(MCFGHelper.newLabel(5, 65, "Gradle(w):"))
-		this.useGradlewBox = new JCheckBox("Use 'gradlew'", true)
+		this.useGradlewBox = new JCheckBox("Use 'gradlew'")
+		println ("loaded: " + module.isUsingGradlew())
+		this.useGradlew = module.isUsingGradlew()
+		this.useGradlewBox.setSelected(this.useGradlew)
 		this.useGradlewBox.setBounds(70, 65, 200, 20)
 		this.useGradlewBox.setName("useGradlew")
 		this.useGradlewBox.addItemListener(this)
 		this.add(this.useGradlewBox)
-		this.gradlewField = new JTextField(module.getBuildFilePath())
+		this.gradlewField = new JTextField(module.getGradlewPath())
 		this.gradlewField.setBounds(dirFieldX, 85, dirFieldW, 20)
 		this.add(this.gradlewField)
 		this.gradlewSelect = new GuiButton(MCFGHelper.width - 25, 85, 20, 20, "...", this)
@@ -73,7 +77,24 @@ class EditModule(private val modules: java.util.List[String])
 	}
 
 	override protected def save(): Unit = {
+		println (this.gradlewSelect.isSelected)
+		println (this.useGradlew)
+		if (this.modules.size() == 1) {
+			val module: Module = HelperData.getModule(this.modules.get(0))
+			module.setDirectoryPath(this.directoryField.getText)
+			module.setUsingGradlew(this.useGradlew)
+			module.setGradlewPath(
+				if (this.useGradlew)
+					this.gradlewField.getText
+				else
+					""
+			)
+			module.setBuildFilePath(this.buildFileField.getText)
+			HelperData.addModule(module)
 
+			HelperData.renameModule(this.modules.get(0), this.nameField.getText())
+			this.modules.set(0, this.nameField.getText())
+		}
 	}
 
 	override protected def addPart(comp: Component): Unit = {
@@ -144,9 +165,9 @@ class EditModule(private val modules: java.util.List[String])
 	}
 
 	def updateGradlew(): Unit = {
-		val useGradlew: Boolean = this.useGradlewBox.isSelected
-		this.gradlewField.setVisible(useGradlew)
-		this.gradlewSelect.setVisible(useGradlew)
+		this.useGradlew = this.useGradlewBox.isSelected
+		this.gradlewField.setVisible(this.useGradlew)
+		this.gradlewSelect.setVisible(this.useGradlew)
 	}
 
 }
