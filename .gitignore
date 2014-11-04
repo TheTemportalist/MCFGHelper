@@ -16,7 +16,7 @@ project/plugins/project/
 .scala_dependencies
 .worksheet
 
-*.imi
+*.iml
 out
 run
 .idea
